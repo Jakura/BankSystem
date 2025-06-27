@@ -303,4 +303,43 @@ public class GUIHandler implements Listener {
             }
         }
     }
+ @EventHandler
+    public void onInventoryClick(InventoryClickEvent e) {
+        if (!(e.getWhoClicked() instanceof Player player)) return;
+        if (e.getCurrentItem() == null) return;
+
+        String title = e.getView().title();
+
+        if (title.equals("Einzahlen")) {
+            e.setCancelled(true);
+            ItemStack clicked = e.getCurrentItem();
+            if (clicked == null) return;
+
+            switch (e.getRawSlot()) {
+                // ... andere Buttons
+
+                case 15 -> { // Schild-Button für spezifischen Betrag einzahlen
+                    SignInputHandler.openSignEditor(player, true);  // true = einzahlen
+                    player.closeInventory();
+                }
+
+                case 31 -> openBankMenu(player);
+            }
+        } else if (title.equals("Abheben")) {
+            e.setCancelled(true);
+            ItemStack clicked = e.getCurrentItem();
+            if (clicked == null) return;
+
+            switch (e.getRawSlot()) {
+                // ... andere Buttons
+
+                case 16 -> { // Schild-Button für spezifischen Betrag abheben
+                    SignInputHandler.openSignEditor(player, false);  // false = abheben
+                    player.closeInventory();
+                }
+
+                case 31 -> openBankMenu(player);
+            }
+        }
+    }
 }
